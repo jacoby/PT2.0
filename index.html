@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PracTimer</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta
+      name="description"
+      content="PracTimer is a Timer built using Vanilla Javascript, HTML5 and CSS."
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link href="./style.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Oswald:700"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./images/favicon-16x16.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="96x96"
+      href="./images/favicon-96x96.png"
+    />
+  </head>
+
+  <body>
+    <div id="header"><a href="#about"> About </a></div>
+    <div id="about" class="overlay">
+      <div class="popup">
+        <h2>About</h2>
+        <a class="close" id="close" href="#">X</a>
+        <div class="content">
+          <p>
+            I had need for a timer. I didn't like any of the timers that were
+            available to me, so I wrote one. I wrote it using Vanilla
+            Javascript, location.hash, and a few interesting parts of CSS and
+            HTML5.
+          </p>
+
+          <p>
+            All controls are via <code>location.hash</code>, also known as the
+            anchor tag.
+          </p>
+          <p>Created by <a href="https://jacoby.github.io/">Dave Jacoby</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div id="time" class="min5">
+      <span id="minute">00</span> <span id="second">00</span>
+    </div>
+
+    <script src="./hammer.min.js"></script>
+    <script src="./tone.js"></script>
+    <script src="./practimer-1.0.js"></script>
+    <script></script>
+  </body>
+</html>
