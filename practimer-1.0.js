@@ -5,8 +5,18 @@
  * an external file
  */
 
+/* Just a few globals */
+let timer = 5;
+let curr = "";
+let main = document.getElementsByTagName("body")[0];
+let title = document.getElementsByTagName("title")[0];
+let time = document.getElementById("time");
 let state = 'pause';
 
+let interval;
+let count = 0;
+
+// defining keyboard behavior
 window.addEventListener("keyup", e => {
   if (e.key === "ArrowRight") {
     prev();
@@ -22,37 +32,34 @@ window.addEventListener("keyup", e => {
   }
 });
 
-
-/* Just a few globals */
-let timer = 5;
-let curr = "";
-let main = document.getElementsByTagName("body")[0];
-let title = document.getElementsByTagName("title")[0];
-let time = document.getElementById("time");
-
 // defining phone behavior
 let mc = new Hammer(main);
 mc.get('swipe').set({
   direction: Hammer.DIRECTION_ALL
 });
 
-mc.on("swipeleft", next);
-mc.on("swiperight", prev);
+mc.on("swipeleft", prev);
+mc.on("swiperight", next);
 mc.on("swipeup", pause);
+// mc.on("swipedown", start);
 mc.on("tap", start);
 
 write_time();
 
 function pause() {
-  console.log("pause");
+  state = 'pause';
   time.classList = [];
   time.classList.add("minP");
+  console.log("pause");
 }
 
 function start() {
-  console.log("start");
+  count = 60 * timer;
+  state = 'play';
+  start_interval();
   time.classList = [];
   time.classList.add("min5");
+  console.log("start");
 }
 
 function prev() {
@@ -81,15 +88,51 @@ function change_minute(time) {
   write_time();
 }
 
-function write_time() {
+
+function start_interval() {
+  interval = setInterval(clock, 1000);
+}
+
+function clock() {
+  count--;
+  let minutes = parseInt(count / 60);
+  let seconds = count % 60;
+  let t = Date.now();
+
+  if ( count <= 10 ) {
+    time.classList = [];
+    time.classList.add("min1");  
+  }
+
+  redraw(minutes, seconds);
+  if (state === 'pause') {
+    console.log('PAUSE');
+    clearInterval(interval);
+    interval = null;
+  }
+  if (count <= 0) {
+    console.log('PAUSE');
+    clearInterval(interval);
+    interval = null;
+  }
+}
+
+function redraw(minutes = 0, seconds = 0) {
   let min = document.getElementById("minute");
   let sec = document.getElementById("second");
-  let min_str = timer;
-  if (parseInt(min_str) < 10) {
-    min_str = '0' + timer;
+  if (minutes < 10) {
+    minutes = "0" + minutes
   }
-  min.innerText = min_str;
-  sec.innerText = '00';
+  if (seconds < 10) {
+    seconds = "0" + seconds
+  }
+  console.log([minutes,seconds].join(":"))
+  min.innerText = minutes;
+  sec.innerText = seconds;
+}
+
+function write_time() {
+  redraw(timer);
 }
 
 // function parse_time(entry) {

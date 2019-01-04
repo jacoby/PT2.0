@@ -122,7 +122,7 @@ body {
   #minute,
   #second {
     display: block;
-    font-size: 50vh;
+    font-size: 45vh;
     line-height: 43vh;
   }
 }
