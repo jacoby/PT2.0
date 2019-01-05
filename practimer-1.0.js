@@ -28,6 +28,7 @@ if (AudioContext) {
 
 // defining keyboard behavior
 window.addEventListener("keyup", e => {
+  console.log(e.key);
   if (e.key === "ArrowRight") {
     prev();
   }
@@ -38,6 +39,12 @@ window.addEventListener("keyup", e => {
     pause();
   }
   if (e.key === "ArrowDown") {
+    start();
+  }
+  if (e.key === "Enter") {
+    start();
+  }
+  if (e.key === " ") {
     start();
   }
 });
