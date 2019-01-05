@@ -1,6 +1,6 @@
 /**
  * PRACTIMER JS
- * 
+ *
  * Finally pulling the active part of Practimer into
  * an external file
  */
@@ -11,10 +11,20 @@ let curr = "";
 let main = document.getElementsByTagName("body")[0];
 let title = document.getElementsByTagName("title")[0];
 let time = document.getElementById("time");
-let state = 'pause';
+let state = "pause";
 
 let interval;
 let count = 0;
+
+// Audio Vars
+var freq = 440;
+var wave = "square";
+var AudioContext = window.AudioContext || window.webkitAudioContext || false;
+if (AudioContext) {
+  var context = new AudioContext();
+  context.resume();
+  var tone = new Tone(context, freq, wave);
+}
 
 // defining keyboard behavior
 window.addEventListener("keyup", e => {
@@ -34,7 +44,7 @@ window.addEventListener("keyup", e => {
 
 // defining phone behavior
 let mc = new Hammer(main);
-mc.get('swipe').set({
+mc.get("swipe").set({
   direction: Hammer.DIRECTION_ALL
 });
 
@@ -47,7 +57,7 @@ mc.on("tap", start);
 write_time();
 
 function pause() {
-  state = 'pause';
+  state = "pause";
   time.classList = [];
   time.classList.add("minP");
   console.log("pause");
@@ -55,7 +65,7 @@ function pause() {
 
 function start() {
   count = 60 * timer;
-  state = 'play';
+  state = "play";
   start_interval();
   time.classList = [];
   time.classList.add("min5");
@@ -78,16 +88,15 @@ function change_minute(time) {
   console.log(time);
   let newtimer = timer + time;
   if (newtimer > 60) {
-    newtimer = 60
+    newtimer = 60;
   }
   if (newtimer < 1) {
-    newtimer = 1
+    newtimer = 1;
   }
   timer = newtimer;
-  console.log(['nt', newtimer]);
+  console.log(["nt", newtimer]);
   write_time();
 }
-
 
 function start_interval() {
   interval = setInterval(clock, 1000);
@@ -99,21 +108,31 @@ function clock() {
   let seconds = count % 60;
   let t = Date.now();
 
-  if ( count <= 10 ) {
-    time.classList = [];
-    time.classList.add("min1");  
-  }
-
   redraw(minutes, seconds);
-  if (state === 'pause') {
-    console.log('PAUSE');
+  if (state === "pause") {
+    console.log("PAUSE");
     clearInterval(interval);
     interval = null;
   }
   if (count <= 0) {
-    console.log('PAUSE');
+    console.log("PAUSE");
     clearInterval(interval);
     interval = null;
+    if (AudioContext) {
+      tone.start();
+      setTimeout(function() {
+        tone.stop();
+      }, 500);
+    }
+  } else if (count <= 10) {
+    time.classList = [];
+    time.classList.add("min1");
+    if (AudioContext) {
+      tone.start();
+      setTimeout(function() {
+        tone.stop();
+      }, 50);
+    }
   }
 }
 
@@ -121,12 +140,12 @@ function redraw(minutes = 0, seconds = 0) {
   let min = document.getElementById("minute");
   let sec = document.getElementById("second");
   if (minutes < 10) {
-    minutes = "0" + minutes
+    minutes = "0" + minutes;
   }
   if (seconds < 10) {
-    seconds = "0" + seconds
+    seconds = "0" + seconds;
   }
-  console.log([minutes,seconds].join(":"))
+  console.log([minutes, seconds].join(":"));
   min.innerText = minutes;
   sec.innerText = seconds;
 }
@@ -134,6 +153,29 @@ function redraw(minutes = 0, seconds = 0) {
 function write_time() {
   redraw(timer);
 }
+
+//     if (hopper < 0) {
+//       window.clearInterval(looper);
+//       if (AudioContext) {
+//         tone.start();
+//         setTimeout(function () {
+//           tone.stop();
+//         }, 500);
+//       }
+//       // console.log("done");
+//     } else if (hopper < 10) {
+//       if (AudioContext) {
+//         tone.start();
+//         setTimeout(function () {
+//           tone.stop();
+//         }, 50);
+//       }
+//       document.getElementById("time").className = "";
+//       document.getElementById("time").className = "min1";
+//     } else {
+//       document.getElementById("time").className = "";
+//       document.getElementById("time").className = "min5";
+//     }
 
 // function parse_time(entry) {
 //   let minutes = 0;
@@ -246,7 +288,7 @@ function write_time() {
 //     //   [location.hash, hopper, minutes, seconds, "", display_minutes].join(" ")
 //     // );
 
-//     // Stop the clock if 
+//     // Stop the clock if
 //     if (location.hash != '#about') {
 //       var time = [display_minutes, seconds].join(":");
 //       document.getElementById("minute").innerHTML = display_minutes;
