@@ -6,7 +6,7 @@
  */
 
 /* Just a few globals */
-let timer = 5;
+let timer = 1;
 let curr = "";
 let main = document.getElementsByTagName("body")[0];
 let title = document.getElementsByTagName("title")[0];
@@ -28,25 +28,24 @@ if (AudioContext) {
 
 // defining keyboard behavior
 window.addEventListener("keyup", e => {
-  console.log(e.key);
-  if (e.key === "ArrowRight") {
-    prev();
-  }
-  if (e.key === "ArrowLeft") {
-    next();
-  }
-  if (e.key === "ArrowUp") {
-    pause();
-  }
-  if (e.key === "ArrowDown") {
-    start();
-  }
-  if (e.key === "Enter") {
-    start();
-  }
-  if (e.key === " ") {
-    start();
-  }
+  // if (e.key === "ArrowRight") {
+  //   prev();
+  // }
+  // if (e.key === "ArrowLeft") {
+  //   next();
+  // }
+  // if (e.key === "ArrowUp") {
+  //   pause();
+  // }
+  // if (e.key === "ArrowDown") {
+  //   start();
+  // }
+  // if (e.key === "Enter") {
+  //   start();
+  // }
+  // if (e.key === " ") {
+  //   start();
+  // }
 });
 
 // defining phone behavior
@@ -57,9 +56,9 @@ mc.get("swipe").set({
 
 mc.on("swipeleft", prev);
 mc.on("swiperight", next);
-mc.on("swipeup", pause);
+// mc.on("swipeup", pause);
 // mc.on("swipedown", start);
-mc.on("tap", start);
+mc.on("tap", toggle);
 
 write_time();
 
@@ -68,6 +67,16 @@ function pause() {
   time.classList = [];
   time.classList.add("minP");
   console.log("pause");
+}
+
+function toggle() {
+  console.log(["State", state].join(": "));
+  if ( state === "pause" ) {
+    start();
+  }
+  else {
+    pause();
+  }
 }
 
 function start() {
@@ -127,16 +136,18 @@ function clock() {
     interval = null;
     if (AudioContext) {
       tone.start();
-      setTimeout(function() {
+      setTimeout(function () {
         tone.stop();
       }, 500);
+      change_minute(0);
+      pause();
     }
   } else if (count <= 10) {
     time.classList = [];
     time.classList.add("min1");
     if (AudioContext) {
       tone.start();
-      setTimeout(function() {
+      setTimeout(function () {
         tone.stop();
       }, 50);
     }

@@ -135,7 +135,7 @@ body {
   #minute,
   #second {
     display: inline;
-    font-size: 35vw;
-    line-height: 30vw;
+    font-size: 40vw;
+    line-height: 40vw;
   }
 }
